@@ -3,6 +3,12 @@ package strings;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/**
+ * Two ways of checking for permutations of the same length String
+ * Iteratively using two HashMaps
+ * Recursively using one HashSet
+ **/
+
 public class Permutations {
 	/*
 	 * Finds if string1 is a permutation of string2 having same length
@@ -19,6 +25,7 @@ public class Permutations {
 			char str1Key = str1.charAt(i);
 			char str2Key = str2.charAt(i);
 			
+			// Update character counters for the first String
 			if (str1Map.containsKey(str1Key)) {
 				int old = str1Map.get(str1Key);
 				str1Map.put(str1Key, old+1);
@@ -26,6 +33,7 @@ public class Permutations {
 				str1Map.put(str1Key, 1);
 			}
 			
+			// Update character counters for the second String
 			if (str2Map.containsKey(str2Key)) {
 				int old = str2Map.get(str2Key);
 				str2Map.put(str1Key, old+1);
@@ -34,23 +42,27 @@ public class Permutations {
 			}
 		}
 		
+
+		// Note to self: In hindsight this could be made more space efficient using
+		// a histogram implemented with and array, but HashMaps just make it so much easier to code.
 		return str1Map.equals(str2Map);
 	}
 	
 	public boolean checkStringForPermutationRecusion(String str1, String str2) {
 		if (str1.length() != str2.length()) return false;
 		
+		// use the recursive helper function to populate a hashset of all possible permutations
 		HashSet<String> wordMap = new HashSet<String>();
 		
+		// Engines Start
 		permuteAndHashString("", str1, wordMap);
-		
-		//System.out.println(wordMap.toString());
 
 		return wordMap.contains(str2);
 	}
 	
 	private void permuteAndHashString(String prefix, String str, HashSet<String> wordMap) {
 		/*
+		 * Concept:
 		 * Try each of the letters in turn as the first letter and then find all the permutations 
 		 * of the remaining letters using a recursive call.
 		 * 
@@ -77,11 +89,11 @@ public class Permutations {
 		String str2="CBA";
 		
 		Permutations p = new Permutations();
-		System.out.println( p.checkStringForPermutationIterative(str1, str2));
-		System.out.println( p.checkStringForPermutationRecusion(str1, str2));
+		print( p.checkStringForPermutationIterative(str1, str2));
+		print( p.checkStringForPermutationRecusion(str1, str2));
 	}
 	
 	public static void print( Object obj ) {
-		System.out.print(obj);
+		System.out.println(obj);
 	}
 }
