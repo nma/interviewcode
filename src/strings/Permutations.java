@@ -8,9 +8,44 @@ import java.util.HashSet;
  * Iteratively using two HashMaps
  * Recursively using one HashSet
  **/
+/**
+ * Generate all permutations of an alphanumeric string 
+ * (lowercase/uppercase only if a letter).
+ */
 
 public class Permutations {
-	/*
+
+	public HashSet<String> wordMap = new HashSet<String>();
+	
+	public boolean isAlphanumeric(char c) {
+		if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public char toggleUpperLower(char c) {
+		if (c >= 65 && c <= 90) {
+			return (char) (97+(c-65));
+		} else if (c >= 97 && c <= 122) {
+			return (char) (65+(c-97));
+		}
+		return c;
+	}
+
+	public void generatePermutation(String input, String anchor) {
+    	if (input.isEmpty()) {
+    		wordMap.add(anchor);
+    	} else {
+    		for (int i = 0; i < input.length(); i++) {
+        		generatePermutation(input.substring(0,i) + input.substring(i+1, input.length()), anchor+input.substring(i,i+1));
+        		if (isAlphanumeric(input.charAt(i))) {
+        			generatePermutation(input.substring(0,i) + input.substring(i+1, input.length()), anchor+input.substring(i,i+1).toUpperCase());
+        		}
+    		}
+    	}
+    }
+    /*
 	 * Finds if string1 is a permutation of string2 having same length
 	 */
 	
@@ -84,13 +119,20 @@ public class Permutations {
 			System.out.println("Wrong number of arguements");
 			return;
 		}*/
-		
-		String str1="ABC";
-		String str2="CBA";
-		
 		Permutations p = new Permutations();
-		print( p.checkStringForPermutationIterative(str1, str2));
-		print( p.checkStringForPermutationRecusion(str1, str2));
+//		String str1="ABC";
+//		String str2="CBA";
+//		
+//		print( p.checkStringForPermutationIterative(str1, str2));
+//		print( p.checkStringForPermutationRecusion(str1, str2));
+		
+		
+		String str3="ab12";
+		p.generatePermutation(str3, "");
+		for (String s: p.wordMap) {
+			print(s);
+		}
+		
 	}
 	
 	public static void print( Object obj ) {
